@@ -21,62 +21,51 @@ function removeItem(arr, item) {
     return arr.pop()
 }
 
-module.exports = class Graph {
+class Graph {
     constructor(options={}) {
+        this.options = {}
 
         // track nodes
 
         if ("trackNodes" in options) {
-            this.trackNodes = options.trackNodes
+            this.options.trackNodes = options.trackNodes
         } else {
-            this.trackNodes = false
+            this.options.trackNodes = false
         }
 
-        if (this.trackNodes) {
+        if (this.options.trackNodes) {
             this.nodeList = []
         }
 
         // track edges
 
         if ("trackEdges" in options) {
-            this.trackEdges = options.trackEdges
+            this.options.trackEdges = options.trackEdges
         } else {
-            this.trackEdges = false
+            this.options.trackEdges = false
         }
 
-        if (this.trackEdges) {
+        if (this.options.trackEdges) {
             this.edgeList = []
         }
 
         // multigraph
         
         if ("multigraph" in options) {
-            this.multigraph = options.multigraph
+            this.options.multigraph = options.multigraph
         } else {
-            this.multigraph = true
-        }
-
-        // directed
-
-        if ("directed" in options) {
-            this.directed = options.directed
-        } else {
-            this.directed = false
+            this.options.multigraph = Graph.multigraph.NONE
         }
     }
 
     // == OPTIONS == //
 
-    isMultigraph() {
-        return this.multigraph
-    }
-
     trackingEdges() {
-        return this.trackEdge
+        return this.options.trackEdge
     }
 
     trackingNodes() {
-        return this.trackNodes
+        return this.options.trackNodes
     }
 
     // == NODE FUNCTIONS == //
@@ -87,7 +76,7 @@ module.exports = class Graph {
             data: data
         }
 
-        if (this.trackNodes) {
+        if (this.options.trackNodes) {
             this.nodeList.push(node)
         }
 
@@ -99,7 +88,7 @@ module.exports = class Graph {
             this.subEdge(edge)
         }
 
-        if (this.trackNodes) {
+        if (this.options.trackNodes) {
             removeItem(this.nodeList, node)
         }
     }
@@ -107,6 +96,17 @@ module.exports = class Graph {
     // == EDGE FUNCTIONS == //
 
     addEdge(from, to, data) {
+        if (this.options.multigraph == Graph.multigraph.NONE) {
+        } else if (this.options.multigraph == Graph.multigraph.DIRECTED) {
+            if ( this.hasEdgeFrom(from, to) ) {
+                return false
+            }
+        } else if (this.options.multigraph == Graph.multigraph.UNDIRECTED) {
+            if ( this.hasEdge(from, to) ) {
+                return false
+            }
+        }
+
         let edge = {
             nodes: [from, to],
             data: data
@@ -115,7 +115,7 @@ module.exports = class Graph {
         from.edges.push(edge)
         to.edges.push(edge)
 
-        if (this.trackEdges) {
+        if (this.options.trackEdges) {
             this.edgeList.push(edge)
         }
 
@@ -132,12 +132,32 @@ module.exports = class Graph {
         return false
     }
 
+    hasEdgeFrom(from, to) {
+        for ( let edge of this.edgesFrom(from) ) {
+            if ( edge.nodes[1] == to ) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    hasEdgeTo(to, from) {
+        for ( let edge of this.edgesTo(to) ) {
+            if ( edge.nodes[0] == from ) {
+                return true
+            }
+        }
+
+        return false
+    }
+
     subEdge(edge) {
         for (let node of edge.nodes) {
             removeItem(node.edges, edge)
         }
 
-        if (this.trackEdges) {
+        if (this.options.trackEdges) {
             removeItem(this.edgeList, edge)
         }
     }
@@ -166,3 +186,11 @@ module.exports = class Graph {
         }
     }
 }
+
+Graph.multigraph = Object.freeze({
+    NONE: Symbol("multigraph.none"),
+    DIRECTED: Symbol("multigraph.directed"),
+    UNDIRECTED: Symbol("multigraph.undirected")
+})
+
+module.exports = Graph

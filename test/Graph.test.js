@@ -56,6 +56,34 @@ describe("#addEdge", () => {
         let edges = trackingGraph.edgeList
         expect(edges).toIncludeSameMembers([edge])
     })
+
+    test("respects directed multigraphs graphs", () => {
+        let directedGraph = new Graph({
+            multigraph: Graph.multigraph.DIRECTED,
+        })
+
+        let node1 = directedGraph.addNode({})
+        let node2 = directedGraph.addNode({})
+
+        expect( directedGraph.addEdge(node1, node2) ).not.toBe( false )
+        expect( directedGraph.addEdge(node1, node2) ).toBe( false )
+
+        expect( directedGraph.addEdge(node2, node1) ).not.toBe( false )
+        expect( directedGraph.addEdge(node2, node1) ).toBe( false )
+    })
+
+    test("respects directed multigraphs graphs", () => {
+        let undirectedGraph = new Graph({
+            multigraph: Graph.multigraph.UNDIRECTED
+        })
+
+        let node1 = undirectedGraph.addNode({})
+        let node2 = undirectedGraph.addNode({})
+
+        expect( undirectedGraph.addEdge(node1, node2) ).not.toBe( false )
+        expect( undirectedGraph.addEdge(node1, node2) ).toBe( false )
+        expect( undirectedGraph.addEdge(node2, node1) ).toBe( false )
+    })
 })
 
 describe("#subEdge", () => {
