@@ -86,7 +86,7 @@ describe("#addEdge", () => {
     })
 })
 
-describe("#subEdge", () => {
+describe("#removeEdge", () => {
     test("removes link from nodes", () => {
         let graph = new Graph()
 
@@ -95,7 +95,7 @@ describe("#subEdge", () => {
 
         let edge1 = graph.addEdge(node1, node2, "e1")
         let edge2 = graph.addEdge(node1, node2, "e2")
-        graph.subEdge(edge2)
+        graph.removeEdge(edge2)
 
         let edges = graph.edges(node1)
 
@@ -110,18 +110,18 @@ describe("#subEdge", () => {
         let edge1 = trackingGraph.addEdge(node1, node2)
         let edge2 = trackingGraph.addEdge(node1, node2)
         let edge3 = trackingGraph.addEdge(node1, node2)
-        trackingGraph.subEdge(edge2)
+        trackingGraph.removeEdge(edge2)
         expect(trackingGraph.edgeList).toIncludeSameMembers([edge1, edge3])
     })
 })
 
-describe("#subNode", () => {
+describe("#removeNode", () => {
     test("removes link from neighboring nodes", () => {
         let graph = new Graph()
         let node1 = graph.addNode({})
         let node2 = graph.addNode({})
         let edge1 = graph.addEdge(node1, node2)
-        graph.subNode(node2)
+        graph.removeNode(node2)
         let edges = graph.edges(node1)
         expect(edges.next().done).toBe(true)
     })
@@ -133,7 +133,7 @@ describe("#subNode", () => {
         let node3 = trackingGraph.addNode({})
         let edge1 = trackingGraph.addEdge(node1, node2)
         let edge2 = trackingGraph.addEdge(node2, node3)
-        trackingGraph.subNode(node2)
+        trackingGraph.removeNode(node2)
         expect(trackingGraph.nodeList).toIncludeSameMembers([node1, node2])
     })
 
@@ -144,7 +144,7 @@ describe("#subNode", () => {
         let node3 = trackingGraph.addNode({})
         let edge1 = trackingGraph.addEdge(node1, node2)
         let edge2 = trackingGraph.addEdge(node2, node3)
-        trackingGraph.subNode(node1)
+        trackingGraph.removeNode(node1)
         expect(trackingGraph.edgeList).toIncludeSameMembers([edge2])
     })
 })

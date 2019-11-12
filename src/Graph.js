@@ -83,9 +83,9 @@ class Graph {
         return node
     }
 
-    subNode(node) {
+    removeNode(node) {
         for (let edge of this.edges(node)) {
-            this.subEdge(edge)
+            this.removeEdge(edge)
         }
 
         if (this.options.trackNodes) {
@@ -152,7 +152,7 @@ class Graph {
         return false
     }
 
-    subEdge(edge) {
+    removeEdge(edge) {
         for (let node of edge.nodes) {
             removeItem(node.edges, edge)
         }
