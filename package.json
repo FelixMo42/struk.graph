@@ -1,0 +1,21 @@
+{
+  "name": "struk.graph",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^24.9.0"
+  },
+  "dependencies": {
+    "jest-extended": "^0.11.2"
+  },
+
+  "jest": {
+    "setupFilesAfterEnv": ["jest-extended"]
+  }
+}
