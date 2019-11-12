@@ -1,3 +1,26 @@
+// Dont want to use lodash just for this one function
+function removeItem(arr, item) {
+    if (arr[arr.length - 1] == item) {
+        return arr.pop()
+    }
+
+    let i = arr.length - 2
+
+    while (i >= 0) {
+        let c = arr[i]
+
+        arr[i] = arr[i + 1]
+
+        if ( c == item ) {
+            break
+        }
+
+        i--
+    }
+
+    return arr.pop()
+}
+
 module.exports = class Graph {
     constructor(options={}) {
 
@@ -10,7 +33,7 @@ module.exports = class Graph {
         }
 
         if (this.trackNodes) {
-            this.nodes = []
+            this.nodeList = []
         }
 
         // track edges
@@ -22,7 +45,7 @@ module.exports = class Graph {
         }
 
         if (this.trackEdges) {
-            this.edges = []
+            this.edgeList = []
         }
 
         // multigraph
@@ -65,10 +88,20 @@ module.exports = class Graph {
         }
 
         if (this.trackNodes) {
-            this.nodes.push(node)
+            this.nodeList.push(node)
         }
 
         return node
+    }
+
+    subNode(node) {
+        for (let edge of this.edges(node)) {
+            this.subEdge(edge)
+        }
+
+        if (this.trackNodes) {
+            removeItem(this.nodeList, node)
+        }
     }
 
     // == EDGE FUNCTIONS == //
@@ -83,7 +116,7 @@ module.exports = class Graph {
         to.edges.push(edge)
 
         if (this.trackEdges) {
-            this.edges.push(edge)
+            this.edgeList.push(edge)
         }
 
         return edge
@@ -97,6 +130,16 @@ module.exports = class Graph {
         }
 
         return false
+    }
+
+    subEdge(edge) {
+        for (let node of edge.nodes) {
+            removeItem(node.edges, edge)
+        }
+
+        if (this.trackEdges) {
+            removeItem(this.edgeList, edge)
+        }
     }
 
     // == EDGE GENERATORS == //
