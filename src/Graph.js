@@ -165,25 +165,47 @@ class Graph {
     // == EDGE GENERATORS == //
 
     *edges(node) {
-        for (let link of node.edges) {
-            yield link
+        for (let edge of node.edges) {
+            yield edge
         }
     }
 
     *edgesTo(node) {
-        for (let link of node.edges) {
-            if (link.nodes[1] == node) {
-                yield link
+        for (let edge of node.edges) {
+            if (edge.nodes[1] == node) {
+                yield edge
             }
         }
     }
 
     *edgesFrom(node) {
-        for (let link of node.edges) {
-            if (link.nodes[0] == node) {
-                yield link
+        for (let edge of node.edges) {
+            if (edge.nodes[0] == node) {
+                yield edge
             }
         }
+    }
+
+    // == TRACKERS == //
+
+    *allNodes() {
+        for (let node of this.nodeList) {
+            yield node
+        }
+    }
+
+    getTotalNodes() {
+        return this.nodeList.length
+    }
+
+    *allEdges() {
+        for (let edge of this.edgeList) {
+            yield edge
+        }
+    }
+
+    getTotalEdges() {
+        return this.nodeList.length
     }
 }
 
