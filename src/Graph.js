@@ -152,6 +152,30 @@ class Graph {
         return false
     }
 
+    getEdge(node1, node2) {
+        for ( let edge of this.edges(node1) ) {
+            if ( edge.nodes[0] == node2 || edge.nodes[1] == node2 ) {
+                return edge
+            }
+        }
+    }
+
+    getEdgeFrom(from, to) {
+        for ( let edge of this.edgesFrom(from) ) {
+            if ( edge.nodes[1] == to ) {
+                return edge
+            }
+        }
+    }
+
+    getEdgeTo(to, from) {
+        for ( let edge of this.edgesTo(to) ) {
+            if ( edge.nodes[0] == from ) {
+                return edge
+            }
+        }
+    }
+
     removeEdge(edge) {
         for (let node of edge.nodes) {
             removeItem(node.edges, edge)
