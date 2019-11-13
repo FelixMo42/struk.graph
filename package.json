@@ -7,7 +7,14 @@
     "test": "jest",
     "perf": "node test/Graph.perf.js"
   },
-  "author": "",
+  "author": "Felix Moses",
+  "bugs": {
+    "url": "https://github.com/anvaka/ngraph.graph/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anvaka/ngraph.graph.git"
+  },
   "license": "ISC",
   "devDependencies": {
     "benchmark": "^2.1.4",
@@ -19,5 +26,8 @@
     "setupFilesAfterEnv": [
       "jest-extended"
     ]
-  }
+  },
+  "keywords": [
+    "graph"
+  ]
 }
