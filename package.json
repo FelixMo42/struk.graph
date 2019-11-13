@@ -4,17 +4,20 @@
   "description": "",
   "main": "test.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "perf": "node test/Graph.perf.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "benchmark": "^2.1.4",
     "jest": "^24.9.0",
     "jest-extended": "^0.11.2"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "jest": {
-    "setupFilesAfterEnv": ["jest-extended"]
+    "setupFilesAfterEnv": [
+      "jest-extended"
+    ]
   }
 }

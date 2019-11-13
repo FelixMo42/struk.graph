@@ -220,6 +220,41 @@ describe("#hasEdge", () => {
 
     test("return correct thing", () => {
         expect( graph.hasEdge(node1, node2) ).toBe( true )
+        expect( graph.hasEdge(node2, node1) ).toBe( true )
         expect( graph.hasEdge(node2, node3) ).toBe( false )
+    })
+})
+
+describe("#hasEdgeFrom", () => {
+    let graph = new Graph()
+
+    let node1 = graph.addNode({})
+    let node2 = graph.addNode({})
+    let node3 = graph.addNode({})
+
+    let edge1 = graph.addEdge(node1, node2)
+    let edge3 = graph.addEdge(node1, node3)
+
+    test("return correct thing", () => {
+        expect( graph.hasEdgeFrom(node1, node2) ).toBe( true )
+        expect( graph.hasEdgeFrom(node2, node1) ).toBe( false )
+        expect( graph.hasEdgeFrom(node2, node3) ).toBe( false )
+    })
+})
+
+describe("#hasEdgeTo", () => {
+    let graph = new Graph()
+
+    let node1 = graph.addNode({})
+    let node2 = graph.addNode({})
+    let node3 = graph.addNode({})
+
+    let edge1 = graph.addEdge(node1, node2)
+    let edge3 = graph.addEdge(node1, node3)
+
+    test("return correct thing", () => {
+        expect( graph.hasEdgeTo(node1, node2) ).toBe( false )
+        expect( graph.hasEdgeTo(node2, node1) ).toBe( true )
+        expect( graph.hasEdgeTo(node2, node3) ).toBe( false )
     })
 })
