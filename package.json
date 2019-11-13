@@ -1,6 +1,6 @@
 {
   "name": "struk.graph",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "main": "test.js",
   "scripts": {
@@ -9,11 +9,11 @@
   },
   "author": "Felix Moses",
   "bugs": {
-    "url": "https://github.com/anvaka/ngraph.graph/issues"
+    "url": "https://github.com/FelixMo42/struk.graph/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/anvaka/ngraph.graph.git"
+    "url": "https://github.com/FelixMo42/struk.graph.git"
   },
   "license": "ISC",
   "devDependencies": {
