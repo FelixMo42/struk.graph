@@ -1,26 +1,95 @@
-const { Suite } = require('benchmark')
+const benny = require("benny")
+const _ = require("lodash")
 
-const Graph = require("../src/Graph")
+const NODE_COUNTS = [ 100 ]
+const EDGE_DENSITY = [ .2 ]
 
-const nodeCount = 1000
+const NODE_COUNT = 100
 
+const GRAPHS = {
+    "ngraph.graph": class {
+        constructor() {
+            this.graph = require("ngraph.graph")()
+        }
 
-new Suite("")
-    .on('cycle', function(event) {
-        console.log(String(event.target))
-    })
+        addNode(id) {
+            this.graph.addNode(id)
+            return id
+        }
 
-    .add("struk.graph[W/O tracking]#addNode", function() {
-        let graph = new Graph({trackNodes: false})
+        removeNode(id) {
+            this.graph.removeNode(id)
+        }
+    },
+    "struk.graph": class {
+        constructor() {
+            this.graph = new (require("../src/Graph"))()
+        }
 
-        for (let i = 0; i < nodeCount; i++) {
+        addNode(id) {
+            return this.graph.addNode(id)
+        }
+
+        removeNode(id) {
+            this.graph.removeNode(id)
+        }
+    },
+    "graphlib": class {
+        constructor() {
+            this.graph = new (require("graphlib")).Graph()
+        }
+
+        addNode(id) {
+            this.graph.setNode(id)
+            return id
+        }
+
+        removeNode(id) {
+            this.graph.removeNode(id)
+        }
+    }
+}
+
+const TESTS = {
+    "Add nodes": (Graph) => {
+        let graph = new Graph()
+
+        for (let i = 0; i < 5000; i++){
             graph.addNode(i)
         }
-    }, { minTime: 1 })
-    .add("struk.graph[W/ tracking]#addNode", function() {
-        let graph = new Graph({trackNodes: true})
+    },
+    "Removing nodes": (Graph) => {
+        let graph = new Graph()
 
-        for (let i = 0; i < nodeCount; i++) {
-            graph.addNode(i)
+        let nodes = []
+        for (let i = 0; i < 5000; i++){
+            nodes.push(graph.addNode(i))
         }
-    }, { minTime: 1 })
+        nodes = _.shuffle(nodes)
+
+        return () => {
+            for (let i = 0; i < 5000; i++){
+                graph.removeNode( nodes[i] )
+            }
+        }
+    }
+}
+
+function generateTest(test) {
+    return Object.entries(GRAPHS).map(([name, Graph]) => 
+        benny.add(name, () => test(Graph))
+    )
+}
+
+// benny.add(name, test(Graph))
+
+Object.entries(TESTS).forEach(([name, test]) => {
+    benny.suite(
+        name,
+
+        ...generateTest(test),
+
+        benny.cycle(),
+        benny.complete()
+    )
+})

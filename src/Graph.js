@@ -22,6 +22,10 @@ function removeItem(arr, item) {
 }
 
 class Graph {
+    /**
+     * Represents a graph object.
+     * @param {*} options 
+     */
     constructor(options={}) {
         this.options = {}
 
@@ -30,7 +34,7 @@ class Graph {
         if ("trackNodes" in options) {
             this.options.trackNodes = options.trackNodes
         } else {
-            this.options.trackNodes = false
+            this.options.trackNodes = true
         }
 
         if (this.options.trackNodes) {
@@ -60,16 +64,27 @@ class Graph {
 
     // == OPTIONS == //
 
+    /**
+     * @returns {boolean} whether the graph is tracking edges 
+     */
     trackingEdges() {
         return this.options.trackEdge
     }
 
+    /**
+     * @returns whether the graph is tracking nodes
+     */
     trackingNodes() {
         return this.options.trackNodes
     }
 
     // == NODE FUNCTIONS == //
 
+    /**
+     * Adds a node with given data to graph.
+     * @param {any} data 
+     * @returns {node} the new node
+     */
     addNode(data) {
         let node = {
             edges: [],
@@ -83,6 +98,10 @@ class Graph {
         return node
     }
 
+    /**
+     * Removes node from graph.
+     * @param {node} node node to remove
+     */
     removeNode(node) {
         for (let edge of this.edges(node)) {
             this.removeEdge(edge)
@@ -95,6 +114,12 @@ class Graph {
 
     // == EDGE FUNCTIONS == //
 
+    /**
+     * Adds edge to graph.
+     * @param {node} from starting point of new edge
+     * @param {node} to 
+     * @param {any} data 
+     */
     addEdge(from, to, data) {
         if (this.options.multigraph == Graph.multigraph.NONE) {
         } else if (this.options.multigraph == Graph.multigraph.DIRECTED) {
@@ -122,9 +147,15 @@ class Graph {
         return edge
     }
 
-    hasEdge(node1, node2) {
-        for ( let edge of this.edges(node1) ) {
-            if ( edge.nodes[0] == node2 || edge.nodes[1] == node2 ) {
+    /**
+     * Checks if the graph has given edge (undirected).
+     * @param {node} from one of the nodes nodes in the edge
+     * @param {node} to the outhe node in the edge
+     * @returns {boolean} whether such an edge exist
+     */
+    hasEdge(from, to) {
+        for ( let edge of this.edges(from) ) {
+            if ( edge.nodes[0] == to || edge.nodes[1] == to ) {
                 return true
             }
         }
@@ -132,6 +163,12 @@ class Graph {
         return false
     }
 
+    /**
+     * Checks if the graph has given edge (directed).
+     * @param {node} from the origin of the edge
+     * @param {node} to the target of the edge
+     * @returns {boolean} whether such an edge exist
+     */
     hasEdgeFrom(from, to) {
         for ( let edge of this.edgesFrom(from) ) {
             if ( edge.nodes[1] == to ) {
@@ -142,6 +179,12 @@ class Graph {
         return false
     }
 
+    /**
+     * Checks if the graph has given edge (directed).
+     * @param {node} to the target of the edge
+     * @param {node} from the origin of the edge
+     * @returns {boolean} whether such an edge exist
+     */
     hasEdgeTo(to, from) {
         for ( let edge of this.edgesTo(to) ) {
             if ( edge.nodes[0] == from ) {
@@ -152,6 +195,12 @@ class Graph {
         return false
     }
 
+    /**
+     * Gets the first edge it finds going between the two nodes (undirected).
+     * @param {node} node1 one of the nodes nodes in the edge
+     * @param {node} node2 the outhe node in the edge
+     * @returns {edge} the first valid edge
+     */
     getEdge(node1, node2) {
         for ( let edge of this.edges(node1) ) {
             if ( edge.nodes[0] == node2 || edge.nodes[1] == node2 ) {
@@ -160,6 +209,12 @@ class Graph {
         }
     }
 
+    /**
+     * Gets the first edge it finds going between the two nodes (directed).
+     * @param {node} from the origin of the edge
+     * @param {node} to the target of the edge
+     * @returns {edge} the first valid edge
+     */
     getEdgeFrom(from, to) {
         for ( let edge of this.edgesFrom(from) ) {
             if ( edge.nodes[1] == to ) {
@@ -168,6 +223,12 @@ class Graph {
         }
     }
 
+    /**
+     * Gets the first edge it finds going between the two nodes (directed).
+     * @param {node} to the target of the edge
+     * @param {node} from the origin of the edge
+     * @returns {edge} the first valid edge
+     */
     getEdgeTo(to, from) {
         for ( let edge of this.edgesTo(to) ) {
             if ( edge.nodes[0] == from ) {
@@ -176,6 +237,10 @@ class Graph {
         }
     }
 
+    /**
+     * Removes an edge from the graph
+     * @param {edge} edge the edge to remove
+     */
     removeEdge(edge) {
         for (let node of edge.nodes) {
             removeItem(node.edges, edge)
@@ -188,12 +253,21 @@ class Graph {
 
     // == EDGE GENERATORS == //
 
+    /**
+     * 
+     * @param {node} node 
+     * @returns {}
+     */
     *edges(node) {
         for (let edge of node.edges) {
             yield edge
         }
     }
 
+    /**
+     * 
+     * @param {node} node 
+     */
     *edgesTo(node) {
         for (let edge of node.edges) {
             if (edge.nodes[1] == node) {
@@ -202,6 +276,10 @@ class Graph {
         }
     }
 
+    /**
+     * 
+     * @param {node} node 
+     */
     *edgesFrom(node) {
         for (let edge of node.edges) {
             if (edge.nodes[0] == node) {
@@ -212,27 +290,42 @@ class Graph {
 
     // == TRACKERS == //
 
+    /**
+     * 
+     */
     *allNodes() {
         for (let node of this.nodeList) {
             yield node
         }
     }
 
+    /**
+     * 
+     */
     getTotalNodes() {
         return this.nodeList.length
     }
 
+    /**
+     * 
+     */
     *allEdges() {
         for (let edge of this.edgeList) {
             yield edge
         }
     }
 
+    /**
+     * 
+     */
     getTotalEdges() {
         return this.nodeList.length
     }
 }
 
+/**
+ * 
+ */
 Graph.multigraph = Object.freeze({
     NONE: Symbol("multigraph.none"),
     DIRECTED: Symbol("multigraph.directed"),

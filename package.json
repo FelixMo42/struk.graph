@@ -4,6 +4,7 @@
   "description": "",
   "main": "test.js",
   "scripts": {
+    "doc": "jsdoc2md src/Graph.js > docs/Graph.md",
     "test": "jest",
     "perf": "node test/Graph.perf.js"
   },
@@ -19,9 +20,13 @@
   "devDependencies": {
     "benchmark": "^2.1.4",
     "jest": "^24.9.0",
-    "jest-extended": "^0.11.2"
+    "jest-extended": "^0.11.2",
+    "jsdoc-to-markdown": "^5.0.2",
+    "lodash": "^4.17.15",
+    "benny": "^3.6.14",
+    "graphlib": "^2.1.7",
+    "ngraph.graph": "^19.0.0"
   },
-  "dependencies": {},
   "jest": {
     "setupFilesAfterEnv": [
       "jest-extended"
