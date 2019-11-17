@@ -38,8 +38,14 @@ class Graph {
         }
 
         if (this.options.trackNodes) {
-            this.nodeList = []
+            this.nodeHead = {isHead: true}
+            this.nodeTail = {isTail: true}
+
+            this.nodeHead.prev = this.nodeTail
+            this.nodeTail.next = this.nodeHead    
         }
+
+        this.nodeCount = 1
 
         // track edges
 
@@ -92,7 +98,13 @@ class Graph {
         }
 
         if (this.options.trackNodes) {
-            this.nodeList.push(node)
+            node.next = this.nodeHead
+            node.prev = this.nodeHead.prev
+
+            this.nodeHead.prev.next = node
+            this.nodeHead.prev = node
+
+            this.nodeCount += 1
         }
 
         return node
@@ -103,12 +115,15 @@ class Graph {
      * @param {node} node node to remove
      */
     removeNode(node) {
-        for (let edge of this.edges(node)) {
+        for (let edge of node.edges) {
             this.removeEdge(edge)
         }
 
         if (this.options.trackNodes) {
-            removeItem(this.nodeList, node)
+            node.next.prev = node.prev
+            node.prev.next = node.next
+
+            this.nodeCount -= 1
         }
     }
 
@@ -294,8 +309,11 @@ class Graph {
      * 
      */
     *allNodes() {
-        for (let node of this.nodeList) {
+        let node = this.nodeTail.next
+
+        while (node !== this.nodeHead) {
             yield node
+            node = node.next
         }
     }
 
@@ -303,7 +321,7 @@ class Graph {
      * 
      */
     getTotalNodes() {
-        return this.nodeList.length
+        return this.nodeCount
     }
 
     /**

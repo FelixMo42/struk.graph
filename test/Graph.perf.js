@@ -4,7 +4,7 @@ const _ = require("lodash")
 const NODE_COUNTS = [ 100 ]
 const EDGE_DENSITY = [ .2 ]
 
-const NODE_COUNT = 100
+const NODE_COUNT = 5000
 
 const GRAPHS = {
     "ngraph.graph": class {
@@ -19,6 +19,15 @@ const GRAPHS = {
 
         removeNode(id) {
             this.graph.removeNode(id)
+            // if ( this.graph.removeNode(id) == false ) {
+            //     console.log( "count: ", this.graph.getNodesCount() )
+
+            //     this.graph.forEachNode((node) => {
+            //         console.log( node.id )
+            //     })
+
+            //     throw `error ${id}`
+            // }
         }
     },
     "struk.graph": class {
@@ -54,22 +63,30 @@ const TESTS = {
     "Add nodes": (Graph) => {
         let graph = new Graph()
 
-        for (let i = 0; i < 5000; i++){
+        for (let i = 0; i < NODE_COUNT; i++){
             graph.addNode(i)
         }
     },
     "Removing nodes": (Graph) => {
         let graph = new Graph()
-
         let nodes = []
-        for (let i = 0; i < 5000; i++){
+        for (let i = 0; i < NODE_COUNT; i++){
             nodes.push(graph.addNode(i))
         }
         nodes = _.shuffle(nodes)
 
+        graphs.push([
+            nodes, graph
+        ])
+
         return () => {
-            for (let i = 0; i < 5000; i++){
-                graph.removeNode( nodes[i] )
+            let [nodes, graph] = graphs.pop()
+
+            c++
+            console.log(c)
+
+            for (let i = 0; i < NODE_COUNT; i++) {
+                graph.removeNode( nodes.pop() )
             }
         }
     }
@@ -80,8 +97,6 @@ function generateTest(test) {
         benny.add(name, () => test(Graph))
     )
 }
-
-// benny.add(name, test(Graph))
 
 Object.entries(TESTS).forEach(([name, test]) => {
     benny.suite(
