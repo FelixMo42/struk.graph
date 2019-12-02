@@ -1,18 +1,10 @@
 // Dont want to use lodash just for this one function
 function removeItem(arr, item) {
-    if (arr[arr.length - 1] == item) {
-        return arr.pop()
-    }
-
-    let i = arr.length - 2
+    let i = arr.length - 1
 
     while (i >= 0) {
-        let c = arr[i]
-
-        arr[i] = arr[i + 1]
-
-        if ( c == item ) {
-            break
+        if ( arr[i] == item ) {
+            arr[i] = arr[arr.length - 1]
         }
 
         i--
