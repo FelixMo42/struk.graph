@@ -70,7 +70,7 @@ class Graph {
     }
 
     /**
-     * @returns whether the graph is tracking nodes
+     * @returns {boolean} whether the graph is tracking nodes or not
      */
     trackingNodes() {
         return this.options.trackNodes
@@ -261,7 +261,7 @@ class Graph {
     // == EDGE GENERATORS == //
 
     /**
-     * 
+     * All edge connected to a node (undirected)
      * @param {node} node 
      * @returns {}
      */
@@ -272,7 +272,7 @@ class Graph {
     }
 
     /**
-     * 
+     * All edges going to a node
      * @param {node} node 
      */
     *edgesTo(node) {
@@ -284,7 +284,7 @@ class Graph {
     }
 
     /**
-     * 
+     * All edges leaving from a node
      * @param {node} node 
      */
     *edgesFrom(node) {
@@ -310,7 +310,7 @@ class Graph {
     }
 
     /**
-     * 
+     * @returns {number} the number of nodes in the graph
      */
     getTotalNodes() {
         return this.nodeCount
@@ -326,7 +326,7 @@ class Graph {
     }
 
     /**
-     * 
+     * @returns {number} the number of edges in the graph
      */
     getTotalEdges() {
         return this.nodeList.length
@@ -334,7 +334,7 @@ class Graph {
 }
 
 /**
- * 
+ * Graph multigraph options.
  */
 Graph.multigraph = Object.freeze({
     NONE: Symbol("multigraph.none"),
